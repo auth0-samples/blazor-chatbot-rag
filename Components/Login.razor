@@ -1,0 +1,31 @@
+@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        Hello @Username!   
+        <a href="Account/Logout">Log out</a>
+    </Authorized>
+    <NotAuthorized>
+        <a href="Account/Login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+   [CascadingParameter]
+   private Task<AuthenticationState>? authenticationState { get; set; }
+   private string Username = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+      // ...existing code...
+
+      // 👇 new code
+      if (authenticationState is not null)
+      {
+        var state = await authenticationState;
+
+        Username = state?.User?.Identity?.Name ?? string.Empty;
+      }
+      // 👆 new code
+    }
+}

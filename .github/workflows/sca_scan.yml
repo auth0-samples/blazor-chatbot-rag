@@ -1,0 +1,13 @@
+name: SCA
+
+on:
+  push:
+    branches: ["master", "main"]
+
+jobs:
+  snyk-cli:
+    uses: atko-security/devsecops-tooling/.github/workflows/sca-scan.yml@main
+    with:
+      additional-arguments: "--exclude=README.md,.jfrog"
+      dotnet-version: "10.0"
+    secrets: inherit
